@@ -5,7 +5,8 @@ response=$(curl -s "https://api.openweathermap.org/data/2.5/weather?q=Ho%20Chi%2
 description=$(echo $response | jq -r '.weather[0].description')
 temp=$(echo $response | jq -r '.main.temp')
 humidity=$(echo $response | jq -r '.main.humidity')
-
-output="Thoi tiet: $description. Nhiet do: $temp °C. Do am: $humidity %"
+wind_speed=$(echo $response | jq -r '.wind.speed') 
+wind_speed_kmh=$(echo "$wind_speed * 3.6" | bc)
+output="Thoi tiet nhiet do: $temp °C. Do am: $humidity % . Gio: $wind_speed_kmh km/h"
 
 echo $output | iconv -f UTF-8 -t ASCII//TRANSLIT > thoitiet.txt
