@@ -1,33 +1,28 @@
-name: Update-Thoitiet
+name: Weather Report
 
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
-  update-thoitiet:
+  get_weather:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
-      - name: Set up environment
-        run: |
-            echo "APIKEY=${{ secrets.APIKEY }}" >> $GITHUB_ENV
-      - name : update thoitiet
+
+      - name: Get Weather Data
         env:
           APIKEY: ${{ secrets.APIKEY }}
-        shell: bash
-        run : |
-          bash auto.sh
-      - name: push updated lists
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update-thoitiet
+        run: |
+          response=$(curl -s "https://api.openweathermap.org/data/2.5/weather?q=Ho%20Chi%20Minh,vietnam&appid=$APIKEY&units=metric&lang=vi")
+          description=$(echo $response | jq -r '.weather[0].description')
+          temp=$(echo $response | jq -r '.main.temp')
+          humidity=$(echo $response | jq -r '.main.humidity')
+          output="Tinh trang thoi tiet: $description. Nhiet do: $temp°C. Do am: $humidity%"
+          echo "$output" > thoitiet.txt
