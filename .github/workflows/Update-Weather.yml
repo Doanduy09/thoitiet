@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq
+          sudo apt-get install -y jq bc
       - name: Set up environment
         run: |
             echo "APIKEY=${{ secrets.APIKEY }}" >> $GITHUB_ENV
@@ -31,8 +31,3 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update-thoitiet
-      - name: Cleanup artifacts
-        uses: dev-drprasad/delete-older-artifacts@v1
-        with:
-          days-old: 1
-          fail-on-error: false
