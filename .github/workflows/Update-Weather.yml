@@ -1,0 +1,31 @@
+name: Update-Thoitiet
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "*/1 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+      - name: Set up environment
+        run: |
+            echo "APIKEY=${{ secrets.APIKEY }}" >> $GITHUB_ENV
+      - name : update thoitiet
+        shell: bash
+        run : |
+          bash thoitiet.sh
+      - name: push updated lists
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update-thoitiet
