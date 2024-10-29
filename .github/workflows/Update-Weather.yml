@@ -31,3 +31,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update-thoitiet
+      - name: Cleanup artifacts
+        uses: dev-drprasad/delete-older-artifacts@v1
+        with:
+          days-old: 1
+          fail-on-error: false
