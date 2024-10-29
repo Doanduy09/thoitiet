@@ -1,6 +1,6 @@
 #!/bin/bash
 
-response=$(curl -s "https://api.openweathermap.org/data/2.5/weather?q=Ho%20Chi%20Minh,vietnam&appid={APIKEY}&units=metric&lang=vi")
+response=$(curl -s "https://api.openweathermap.org/data/2.5/weather?q=Ho%20Chi%20Minh,vietnam&appid=$APIKEY&units=metric&lang=vi")
 
 description=$(echo $response | jq -r '.weather[0].description')
 temp=$(echo $response | jq -r '.main.temp')
