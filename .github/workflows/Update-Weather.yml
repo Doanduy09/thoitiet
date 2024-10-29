@@ -22,6 +22,8 @@ jobs:
         run: |
             echo "APIKEY=${{ secrets.APIKEY }}" >> $GITHUB_ENV
       - name : update thoitiet
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
         shell: bash
         run : |
           bash auto.sh
